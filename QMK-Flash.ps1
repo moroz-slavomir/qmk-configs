@@ -24,9 +24,14 @@ $hexFile = $Matches[0]
 $wslQmkDir = wsl -- readlink -f ~/qmk_firmware
 $winHexFile =  wsl -- wslpath -a -w $wslQmkDir/$hexFile
 
-qmk_toolbox.exe flash m32u4 $winHexFile 
-
 # Cleanup
 Remove-Item -Path $tempFile
 Set-Location $currentDir
+
+# Flash
+while (1) {
+    qmk_toolbox.exe flash m32u4 $winHexFile | Out-Default
+    Start-Sleep 1
+}
+
 
