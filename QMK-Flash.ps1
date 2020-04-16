@@ -20,13 +20,14 @@ $wslFile = $wslPath + "/" + $tempFile.BaseName + $tempFile.Extension
 $output = [string] (wsl -- ~/.local/bin/qmk flash $wslFile)
 
 $output -match '(\S+\.hex)'
-$hexFileName = $Matches[0]
-if($hexFileName) {
-    wsl -- mv ~/qmk_firmware/$hexFileName firmware.hex
-}
+$hexFile = $Matches[0]
+$wslQmkDir = wsl -- readlink -f ~/qmk_firmware
+$winHexFile =  wsl -- wslpath -a -w $wslQmkDir/$hexFile
+echo $winHexFile
+
+qmk_toolbox.exe flash m32u4 $winHexFile 
 
 # Cleanup
 Remove-Item -Path $tempFile
-Remove-Item -Path firmware
 Set-Location $currentDir
 
