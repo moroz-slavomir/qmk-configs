@@ -16,4 +16,9 @@ make git-submodule
 ### windows
 install [QMK Toolbox](https://github.com/qmk/qmk_toolbox/releases) with drivers
 
+## usage
+Download json config from [QMK Configurator](https://config.qmk.fm/#/handwired/dactyl_manuform/6x6/LAYOUT_6x6)
 
+`$ QMK-Flash.ps1 <json> <keyboard>`
+
+`$ QMK-Flash.ps1 .\manuform_6x6_default.json proto_1`
