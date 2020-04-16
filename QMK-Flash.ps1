@@ -15,7 +15,7 @@ $modifiedConfig = ConvertTo-Json $config
 Add-Content -Path $tempFile -Value $modifiedConfig
 
 # Compile firmware in wsl
-$wslPath = wsl -- echo "`$PWD"
+$wslPath = wsl -- wslpath -a .
 $wslFile = $wslPath + "/" + $tempFile.BaseName + $tempFile.Extension
 $output = [string] (wsl -- ~/.local/bin/qmk flash $wslFile)
 
@@ -23,7 +23,6 @@ $output -match '(\S+\.hex)'
 $hexFile = $Matches[0]
 $wslQmkDir = wsl -- readlink -f ~/qmk_firmware
 $winHexFile =  wsl -- wslpath -a -w $wslQmkDir/$hexFile
-echo $winHexFile
 
 qmk_toolbox.exe flash m32u4 $winHexFile 
 

@@ -30,6 +30,7 @@
 
 # Executables
 *.exe
+!qmk_toolbox.exe
 *.out
 *.app
 *.i*86
