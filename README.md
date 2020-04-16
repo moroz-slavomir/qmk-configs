@@ -22,3 +22,5 @@ Download json config from [QMK Configurator](https://config.qmk.fm/#/handwired/d
 `$ QMK-Flash.ps1 <json> <keyboard>`
 
 `$ QMK-Flash.ps1 .\manuform_6x6_default.json proto_1`
+
+![Sample](https://github.com/moroz-slavomir/qmk-configs/raw/master/Sample.PNG)
