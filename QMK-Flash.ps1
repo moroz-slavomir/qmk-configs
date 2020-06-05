@@ -27,6 +27,7 @@ $winHexFile =  wsl -- wslpath -a -w $wslQmkDir/$hexFile
 # Cleanup
 Remove-Item -Path $tempFile
 Set-Location $currentDir
+Copy-Item -Path $winHexFile -Destination . 
 
 # Flash
 while (1) {
