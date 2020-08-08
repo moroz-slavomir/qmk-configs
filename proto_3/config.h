@@ -74,4 +74,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLED_NUM 12
 #define RGBLED_SPLIT { 6, 6 }
 #define RGBLIGHT_ANIMATIONS
-#define RGBLIGHT_SLEEP
+// #define RGBLIGHT_SLEEP
