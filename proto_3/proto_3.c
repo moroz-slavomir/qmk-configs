@@ -1,5 +1,8 @@
 #include "proto_3.h"
 
+#define HSV_DEFAULT_COLOR HSV_TEAL
+#define HSV_DIMM_RED 0, 255, 200
+
 void keyboard_pre_init_user(void) {
   // Call the keyboard pre init code.
 
@@ -9,7 +12,7 @@ void keyboard_pre_init_user(void) {
 
 void keyboard_post_init_user(void) {
   rgblight_enable_noeeprom(); // Enables RGB, without saving settings
-  rgblight_sethsv_noeeprom(HSV_CYAN);
+  rgblight_sethsv_noeeprom(HSV_DEFAULT_COLOR);
   // rgblight_mode_noeeprom(RGBLIGHT_MODE_BREATHING + 3);
 }
 
@@ -25,10 +28,10 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
     case 3:
     case 4:
-        rgblight_sethsv_noeeprom(HSV_RED);
+        rgblight_sethsv_noeeprom(HSV_DIMM_RED);
         break;
     default: //  for any other layers, or the default layer
-        rgblight_sethsv_noeeprom(HSV_CYAN);
+        rgblight_sethsv_noeeprom(HSV_DEFAULT_COLOR);
         break;
     }
   return state;
