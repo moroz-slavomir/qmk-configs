@@ -1,7 +1,9 @@
 #include "proto_3.h"
 
-#define HSV_DEFAULT_COLOR 128, 255, 0 // no brightness teal/cyan
-#define HSV_DIMM_RED 0, 255, 200
+#define DIMM_BRIGHTNESS 200
+#define HSV_DIMM_CYAN 128, 255, DIMM_BRIGHTNESS
+#define HSV_DIMM_RED 0, 255, DIMM_BRIGHTNESS
+#define HSV_DIMM_YELLOW 43, 255, DIMM_BRIGHTNESS
 
 bool get_tapping_force_hold(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -12,12 +14,28 @@ bool get_tapping_force_hold(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case RGB_TOG:
+      if (record->event.pressed) {
+        // Do something when pressed
+        uint8_t val = rgblight_get_val() ? 0 : DIMM_BRIGHTNESS;
+        rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), val);
+      } else {
+        // Do something else when release
+      }
+      return false; // Skip all further processing of this key
+    default:
+      return true; // Process all other keycodes normally
+  }
+}
+
 const rgblight_segment_t PROGMEM gaming_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, 12, HSV_DIMM_RED}
 );
 
 const rgblight_segment_t PROGMEM capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 6, HSV_YELLOW}
+    {0, 6, HSV_DIMM_YELLOW}
 );
 
 const rgblight_segment_t* const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
@@ -29,9 +47,7 @@ void keyboard_post_init_user(void) {
     // Enable the LED layers
     rgblight_layers = rgb_layers;
 
-    rgblight_sethsv(HSV_TEAL);
-    // rgblight_enable_noeeprom(); // Enables RGB, without saving settings
-    // rgblight_mode_noeeprom(RGBLIGHT_MODE_BREATHING + 3);
+    rgblight_sethsv(HSV_DIMM_CYAN);
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
