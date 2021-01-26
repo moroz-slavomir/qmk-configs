@@ -17,7 +17,7 @@ Add-Content -Path $tempFile -Value $modifiedConfig
 # Compile firmware in wsl
 $wslPath = wsl -- wslpath -a .
 $wslFile = $wslPath + "/" + $tempFile.BaseName + $tempFile.Extension
-$output = [string] (wsl -- ~/.local/bin/qmk flash $wslFile)
+$output = [string] (wsl -- ~/.local/bin/qmk compile $wslFile)
 
 $output -match '(\S+\.hex)'
 $hexFile = $Matches[0]
