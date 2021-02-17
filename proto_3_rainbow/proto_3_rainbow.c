@@ -5,6 +5,16 @@
 #define HSV_DIMM_RED 0, 255, DIMM_BRIGHTNESS
 #define HSV_DIMM_YELLOW 43, 255, DIMM_BRIGHTNESS
 
+layer_state_t previous_layer_state = 0;
+
+uint32_t get_previous_layer(void) {
+    if (previous_layer_state) {
+        return get_highest_layer(previous_layer_state);
+    }
+
+    return 0;
+} 
+
 bool get_tapping_force_hold(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case LSFT_T(KC_SPC):
@@ -35,14 +45,19 @@ bool led_update_user(led_t led_state) {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch (get_highest_layer(state)) {
-    case 3:
-    case 4:
-        rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL + 5);
-        rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), DIMM_BRIGHTNESS);
-        break;
-    default: //  for any other layers, or the default layer
+    case 0:
         rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), 0);
         break;
+    case 3:
+        if (get_previous_layer() != 4) {
+            rgblight_mode(RGBLIGHT_MODE_RAINBOW_SWIRL + 5);
+            rgblight_sethsv(rgblight_get_hue(), rgblight_get_sat(), DIMM_BRIGHTNESS);
+        }
+        break;
+    default: //  for any other layers, or the default layer
+        break;
     }
-  return state;
+
+    previous_layer_state = state;
+    return state;
 }
