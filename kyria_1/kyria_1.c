@@ -34,17 +34,23 @@ __attribute__ ((weak)) const keypos_t PROGMEM hand_swap_config[MATRIX_ROWS][MATR
 /* Map physical under glow LEDs for RGB matrix support */
 led_config_t g_led_config = { {
     // Key Matrix to LED Index
-    { NO_LED, NO_LED, NO_LED, 4,      NO_LED, NO_LED, 5,      9     },
-    { NO_LED, NO_LED, 3,      NO_LED, NO_LED, NO_LED, NO_LED, NO_LED },
-    { NO_LED, 0,      NO_LED, NO_LED, NO_LED, 7,      6,      8      },
-    { NO_LED, NO_LED, 1,      2,      NO_LED, NO_LED, NO_LED, NO_LED },
+    // { NO_LED, NO_LED, NO_LED, 4,      NO_LED, NO_LED, 5,      9     },
+    // { NO_LED, NO_LED, 3,      NO_LED, NO_LED, NO_LED, NO_LED, NO_LED },
+    // { NO_LED, 0,      NO_LED, NO_LED, NO_LED, 7,      6,      8      },
+    // { NO_LED, NO_LED, 1,      2,      NO_LED, NO_LED, NO_LED, NO_LED },
+    { NO_LED, NO_LED, NO_LED, 0,      NO_LED, NO_LED, 1,      2     },
+    { NO_LED, NO_LED, 9,      NO_LED, NO_LED, NO_LED, NO_LED, NO_LED },
+    { NO_LED, 8,      NO_LED, NO_LED, NO_LED, 5,      4,      3      },
+    { NO_LED, NO_LED, 7,      6,      NO_LED, NO_LED, NO_LED, NO_LED },
+
     { NO_LED, NO_LED, NO_LED, 14,     NO_LED, NO_LED, 15,     19     },
     { NO_LED, NO_LED, 13,     NO_LED, NO_LED, NO_LED, NO_LED, NO_LED },
     { NO_LED, 10,     NO_LED, NO_LED, NO_LED, 17,     16,     18     },
     { NO_LED, NO_LED, 11,     12,     NO_LED, NO_LED, NO_LED, NO_LED },
 }, {
     // LED Index to Physical Position
-    {91,40}, {77,56}, {63,56}, {77,24}, {63,8}, {21,8}, {21,40}, {35,40}, {7,40}, {7,8},
+    //{91,40}, {77,56}, {63,56}, {77,24}, {63,8}, {21,8}, {21,40}, {35,40}, {7,40}, {7,8},
+    {63,8}, {21,8}, {7,8}, {7,40}, {21,40}, {35,40}, {63,56}, {77,56}, {91,40}, {77,24},
     {133,40}, {147,56}, {161,56}, {147,24}, {161,8}, {203,8}, {203,40}, {189,40}, {217,40}, {217,8}
 }, {
     // LED Index to Flag
@@ -95,8 +101,8 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         break;
     case 3:
         if (get_previous_layer() != 4) {
-            rgb_matrix_set_speed(32);
-            rgb_matrix_mode(RGB_MATRIX_RAINBOW_PINWHEELS);
+            rgb_matrix_set_speed(64);
+            rgb_matrix_mode(RGB_MATRIX_RAINBOW_MOVING_CHEVRON);
         }
         break;
     default: //  for any other layers, or the default layer
