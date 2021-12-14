@@ -89,26 +89,30 @@ void keyboard_post_init_user(void) {
     set_default_rgb();
 }
 
-bool led_update_user(led_t led_state) {
-
-    return true;
-}
-
 layer_state_t layer_state_set_user(layer_state_t state) {
-    switch (get_highest_layer(state)) {
-    case 0:
-            set_default_rgb();
-        break;
-    case 3:
-        if (get_previous_layer() != 4) {
-            rgb_matrix_set_speed(64);
-            rgb_matrix_mode(RGB_MATRIX_RAINBOW_MOVING_CHEVRON);
-        }
-        break;
-    default: //  for any other layers, or the default layer
-        break;
+    switch(get_highest_layer(state)) {
+        case 0:
+                set_default_rgb();
+            break;
+        case 3:
+            if (get_previous_layer() != 4) {
+                rgb_matrix_set_speed(64);
+                rgb_matrix_mode(RGB_MATRIX_RAINBOW_MOVING_CHEVRON);
+            }
+            break;
+        default:
+            break;
     }
 
     previous_layer_state = state;
     return state;
+}
+
+void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    if (host_keyboard_led_state().caps_lock) {
+        rgb_matrix_set_color(1, RGB_RED);
+        rgb_matrix_set_color(2, RGB_RED);
+        rgb_matrix_set_color(3, RGB_RED);
+        rgb_matrix_set_color(4, RGB_RED);
+    }
 }
