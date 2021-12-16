@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "kyria_1.h"
+#include "lufa.h"
 
 #ifdef SWAP_HANDS_ENABLE
 // clang-format off
@@ -115,4 +116,8 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         rgb_matrix_set_color(3, RGB_RED);
         rgb_matrix_set_color(4, RGB_RED);
     }
+}
+
+void housekeeping_task_user(void) {
+    rgb_matrix_set_suspend_state(USB_DeviceState == DEVICE_STATE_Suspended);
 }
