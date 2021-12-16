@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "kyria_1.h"
+#include "transactions.h"
 
 #ifdef SWAP_HANDS_ENABLE
 // clang-format off
@@ -85,10 +86,6 @@ uint32_t get_previous_layer(void) {
     return 0;
 } 
 
-void keyboard_post_init_user(void) {
-    set_default_rgb();
-}
-
 layer_state_t layer_state_set_user(layer_state_t state) {
     switch(get_highest_layer(state)) {
         case 0:
@@ -115,4 +112,62 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         rgb_matrix_set_color(3, RGB_RED);
         rgb_matrix_set_color(4, RGB_RED);
     }
+}
+
+void suspend_power_down_user(void) {
+    // code will run multiple times while keyboard is suspended
+#   if defined(RGB_MATRIX_ENABLE)
+        rgb_matrix_mode(RGB_MATRIX_SOLID_COLOR);
+        rgb_matrix_sethsv(HSV_BLACK);
+#   endif
+}
+
+// void suspend_wakeup_init_user(void) {
+//     // code will run on keyboard wakeup
+// }
+
+typedef struct _master_to_slave_t {
+    bool suspend;
+} master_to_slave_t;
+
+typedef struct _slave_to_master_t {
+    bool confirm;
+} slave_to_master_t;
+
+void user_sync_suspend_slave_handler(uint8_t in_buflen, const void* in_data, uint8_t out_buflen, void* out_data) {
+    const master_to_slave_t *m2s = (const master_to_slave_t*)in_data;
+    slave_to_master_t *s2m = (slave_to_master_t*)out_data;
+
+    // rgb_matrix_set_suspend_state(m2s->suspend);
+    if (m2s->suspend) {
+        rgb_matrix_mode(RGB_MATRIX_SOLID_COLOR);
+        rgb_matrix_sethsv(HSV_RED);
+    } else {
+        rgb_matrix_mode(RGB_MATRIX_SOLID_COLOR);
+        rgb_matrix_sethsv(HSV_GREEN);
+    }
+    
+    s2m->confirm = true;
+}
+
+void housekeeping_task_user(void) {
+    if (is_keyboard_master()) {
+        // Interact with slave every 500ms
+        static uint32_t last_sync = 0;
+        if (timer_elapsed32(last_sync) > 500) {
+            master_to_slave_t m2s = {rgb_matrix_get_suspend_state()};
+            dprintf("Master suspend value: %d\n", m2s.suspend);
+            if(transaction_rpc_send(USER_SYNC_SUSPEND, sizeof(m2s), &m2s)) {
+                last_sync = timer_read32();
+            } else {
+                dprint("Slave sync failed!\n");
+            }
+        }
+    }
+}
+
+void keyboard_post_init_user(void) {
+    set_default_rgb();
+    transaction_register_rpc(USER_SYNC_SUSPEND, user_sync_suspend_slave_handler);
+    // debug_enable=true;
 }

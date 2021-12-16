@@ -30,3 +30,5 @@ RGB_MATRIX_SUPPORTED = yes
 
 RGBLIGHT_ENABLE = no      # Enable keyboard RGB underglow
 RGBLIGHT_DRIVER = WS2812
+
+NO_SUSPEND_POWER_DOWN = no

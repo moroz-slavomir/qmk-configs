@@ -82,4 +82,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define ENABLE_RGB_MATRIX_RAINBOW_MOVING_CHEVRON
 #endif
 
+#define SPLIT_TRANSACTION_IDS_USER USER_SYNC_SUSPEND
+
 
