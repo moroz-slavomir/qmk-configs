@@ -32,7 +32,7 @@ $winHexFile =  wsl -- wslpath -a -w $wslQmkDir/$hexFile
 # Cleanup
 Remove-Item -Path $tempFile
 Set-Location $currentDir
-Copy-Item -Path $winHexFile -Destination . 
+#Copy-Item -Path $winHexFile -Destination . 
 
 # Flash
 qmk_toolbox.exe $winHexFile | Out-Default
