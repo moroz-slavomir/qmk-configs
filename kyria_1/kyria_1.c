@@ -91,9 +91,7 @@ void set_default_rgb(void) {
     } else {
         rgb_matrix_disable();
     }
-    #endif
-
-    #ifndef VIALRGB_ENABLE
+    #else
     rgb_matrix_mode(RGB_MATRIX_SOLID_COLOR);
     rgb_matrix_sethsv(HSV_CYAN);
     #endif
@@ -104,11 +102,8 @@ void set_gaming_rgb(void) {
     rgb_matrix_enable();
 
     #ifdef LINDA
-    rgb_matrix_sethsv_noeeprom(128, 255, 120); // Cyan
-    #endif
-
-    #ifndef LINDA
-    rgb_matrix_sethsv_noeeprom(HSV_WHITE);
+    rgb_matrix_sethsv_noeeprom(128, 255, rgb_color.v); // Cyan
+    #else
     rgb_matrix_set_speed_noeeprom(64);
     rgb_matrix_mode_noeeprom(RGB_MATRIX_RAINBOW_MOVING_CHEVRON);
     #endif    
@@ -127,9 +122,7 @@ uint32_t get_previous_layer(void) {
 void keyboard_post_init_user(void) {
     #ifdef VIALRGB_ENABLE
     save_rgb_state();
-    #endif
-
-    #ifndef VIALRGB_ENABLE
+    #else
     set_default_rgb();
     #endif
 }
@@ -157,18 +150,16 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if (host_keyboard_led_state().caps_lock) {
 
-        #ifndef LINDA
-        rgb_matrix_set_color(1, RGB_RED);
-        rgb_matrix_set_color(2, RGB_RED);
-        rgb_matrix_set_color(3, RGB_RED);
-        rgb_matrix_set_color(4, RGB_RED);
-        #endif
-
         #ifdef LINDA
         rgb_matrix_set_color(5, RGB_GOLD);
         rgb_matrix_set_color(9, RGB_GOLD);
         rgb_matrix_set_color(6, RGB_GOLD);
         rgb_matrix_set_color(8, RGB_GOLD);
+        #else
+        rgb_matrix_set_color(1, RGB_RED);
+        rgb_matrix_set_color(2, RGB_RED);
+        rgb_matrix_set_color(3, RGB_RED);
+        rgb_matrix_set_color(4, RGB_RED);
         #endif
     }
 }
