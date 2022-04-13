@@ -15,20 +15,19 @@
  */
 #include QMK_KEYBOARD_H
 
-enum layers { _BASE = 0, _NAV, _FUNCTION, _GAME, _ADJUST };
+enum layers { _BASE = 0, _NAV, _SYM, _FUNCTION, _ADJUST };
 
 // Aliases for readability
 
+#define SYM MO(_SYM)
 #define NAV MO(_NAV)
 #define FKEYS MO(_FUNCTION)
-#define GAME TO(_GAME)
 #define ADJUST MO(_ADJUST)
-#define BASE TO(_BASE)
 
-#define CTL_BSPC MT(MOD_LCTL, KC_BSPC)
-#define SFT_ENT MT(MOD_LSFT, KC_ENT)
-#define NAV_DEL LT(_NAV, KC_DEL)
-#define ALT_TAB MT(MOD_LALT, KC_TAB)
+#define CTL_ESC MT(MOD_LCTL, KC_ESC)
+#define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
+#define CTL_MINS MT(MOD_RCTL, KC_MINUS)
+#define ALT_ENT MT(MOD_LALT, KC_ENT)
 
 // Note: LAlt/Enter (ALT_ENT) is not the same thing as the keyboard shortcut Alt+Enter.
 // The notation `mod/tap` denotes a key that activates the modifier `mod` when held down, and
@@ -68,10 +67,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'  `----------------------------------'
  */
     [_BASE] = LAYOUT_via(
-     KC_ESC , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T , _______, _______,    _______, _______, KC_Y,   KC_U ,  KC_I ,   KC_O ,  KC_P , KC_BSLS,
-     KC_LGUI, KC_A ,  KC_S   ,  KC_D  ,   KC_F ,   KC_G ,                                        KC_H,   KC_J ,  KC_K ,   KC_L ,KC_SCLN, KC_QUOT,
-     GAME   , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , KC_LBRC, KC_RBRC,    KC_EQL , KC_MINS, KC_N,   KC_M ,KC_COMM, KC_DOT ,KC_SLSH,   GAME ,
-                                FKEYS ,   NAV_DEL  ,CTL_BSPC, SFT_ENT, ALT_TAB,    KC_LGUI, SFT_ENT, KC_SPC, NAV  , FKEYS
+     KC_TAB  , KC_Q ,  KC_W   ,  KC_E  ,   KC_R ,   KC_T ,  KC_VOLD, KC_VOLU,   KC_PGDN, KC_PGUP, KC_Y,   KC_U ,  KC_I ,   KC_O ,  KC_P , KC_BSPC,
+     CTL_ESC , KC_A ,  KC_S   ,  KC_D  ,   KC_F ,   KC_G ,                                        KC_H,   KC_J ,  KC_K ,   KC_L ,KC_SCLN,CTL_QUOT,
+     KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V ,   KC_B , KC_LBRC,KC_CAPS,     FKEYS  , KC_RBRC, KC_N,   KC_M ,KC_COMM, KC_DOT ,KC_SLSH, KC_RSFT,
+                                ADJUST , KC_LGUI, ALT_ENT, KC_SPC , NAV   ,     SYM    , KC_SPC ,KC_RALT, KC_RGUI, KC_APP
     ),
 
 /*
@@ -84,14 +83,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |ScLck |  |      |      | Pause|M Prev|M Play|M Next|VolMut| PrtSc  |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      | _______     |      |  |      |      |      |      |      |
+ *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
     [_NAV] = LAYOUT_via(
-      _______, _______, KC_LPRN, _______, KC_RPRN, _______, _______, _______, _______, _______, KC_VOLU, KC_HOME, KC_UP,   KC_END,  KC_PGUP, KC_DEL,
-      _______, KC_LGUI, KC_LSFT, KC_LCTL, KC_LALT, _______,                                     KC_VOLD, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, KC_INS,
-      KC_CAPS, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MUTE, KC_MPRV, KC_MPLY, KC_MNXT, KC_PAUSE,KC_PSCR,
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_VOLU, KC_DEL,
+      _______, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, _______,                                     KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_VOLD, KC_INS,
+      _______, _______, _______, _______, _______, _______, _______, KC_SLCK, _______, _______,KC_PAUSE, KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE, KC_PSCR,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
@@ -109,11 +108,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
-    [_FUNCTION] = LAYOUT_via(
-      KC_GRV ,  KC_F9 ,  KC_F10,  KC_F11,  KC_F12, _______, _______, _______, _______, _______, KC_PSLS, KC_7, KC_8, KC_9, KC_PMNS, _______,
-      KC_TILD,  KC_F5 ,  KC_F6 ,  KC_F7 ,  KC_F8 , _______,                                     KC_PAST, KC_4, KC_5, KC_6, KC_PPLS, _______,
-      KC_LALT,  KC_F1 ,  KC_F2 ,  KC_F3 ,  KC_F4 , _______, _______, _______, _______, _______, _______, KC_1, KC_2, KC_3, KC_PEQL, _______,
-                                 _______, _______, _______, _______, _______, _______, _______, _______, KC_0, KC_PDOT
+    [_SYM] = LAYOUT_via(
+      KC_GRV ,   KC_1 ,   KC_2 ,   KC_3 ,   KC_4 ,   KC_5 , _______, _______, _______, _______, KC_6 ,   KC_7 ,   KC_8 ,   KC_9 ,   KC_0 , KC_EQL ,
+     KC_TILD , KC_EXLM,  KC_AT , KC_HASH,  KC_DLR, KC_PERC,                                     KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_PLUS,
+     KC_PIPE , KC_BSLS, KC_COLN, KC_SCLN, KC_MINS, KC_NUBS, KC_LBRC, _______, _______, KC_RBRC, KC_NUHS, KC_UNDS, KC_COMM,  KC_DOT, KC_SLSH, KC_QUES,
+                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
 /*
@@ -130,11 +129,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  */
-    [_GAME] = LAYOUT_via(
-      KC_ESC ,   KC_1 ,  KC_2 ,   KC_3  ,  KC_4  ,   KC_T , _______, _______, _______, _______,  KC_F1 ,  KC_F2 ,  KC_UP ,  KC_F3 ,  KC_F4 , KC_VOLU,
-      KC_TAB ,   KC_X,   KC_Q ,   KC_W  ,  KC_E  ,   KC_R ,                                      KC_F5 , KC_LEFT, KC_DOWN, KC_RGHT,  KC_F9 , KC_VOLD,
-      BASE   , KC_LSFT,  KC_A ,   KC_S  ,  KC_D  ,   KC_F ,  KC_C  ,  KC_B  , _______, _______,   KC_P ,   KC_M ,   KC_I ,   KC_J ,   KC_L ,    BASE,
-                                  KC_Z  , KC_LCTL, KC_SPC ,  KC_G  ,  KC_V  , _______, _______, _______, _______, _______
+    [_FUNCTION] = LAYOUT_via(
+      _______,  KC_F9 ,  KC_F10,  KC_F11,  KC_F12, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+      _______,  KC_F5 ,  KC_F6 ,  KC_F7 ,  KC_F8 , _______,                                     _______, KC_RSFT, KC_RCTL, KC_LALT, KC_RGUI, _______,
+      _______,  KC_F1 ,  KC_F2 ,  KC_F3 ,  KC_F4 , _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
+                                 _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
 /*
@@ -153,8 +152,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
     [_ADJUST] = LAYOUT_via(
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______,
-      _______, _______, _______, _______, _______, _______,                                     _______, _______, _______, _______,  _______, _______,
-      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______,
+      _______, _______, _______, _______, _______, _______,                                     RGB_TOG, RGB_SAI, RGB_HUI, RGB_VAI,  RGB_MOD, _______,
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_SAD, RGB_HUD, RGB_VAD, RGB_RMOD, _______,
                                  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 
