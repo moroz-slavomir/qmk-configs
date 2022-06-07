@@ -105,7 +105,3 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         rgb_matrix_set_color(19, RGB_RED);    
     }
 }
-
-void housekeeping_task_user(void) {
-    rgb_matrix_set_suspend_state(USB_DeviceState == DEVICE_STATE_Suspended);
-}

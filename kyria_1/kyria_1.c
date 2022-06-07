@@ -14,7 +14,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "kyria_1.h"
-#include "lufa.h"
 
 #ifdef SWAP_HANDS_ENABLE
 // clang-format off
@@ -66,6 +65,11 @@ led_config_t g_led_config = { {
 // CUSTOM
 //////////////
 
+#define DIMM_BRIGHTNESS 200
+#define HSV_DIMM_CYAN 128, 255, DIMM_BRIGHTNESS
+#define HSV_DIMM_RED 0, 255, DIMM_BRIGHTNESS
+#define HSV_DIMM_YELLOW 43, 255, DIMM_BRIGHTNESS
+
 uint8_t rgb_mode;
 HSV rgb_color;
 uint8_t rgb_speed;
@@ -104,8 +108,10 @@ void set_gaming_rgb(void) {
     #ifdef LINDA
     rgb_matrix_sethsv_noeeprom(128, 255, rgb_color.v); // Cyan
     #else
-    rgb_matrix_set_speed_noeeprom(64);
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_RAINBOW_MOVING_CHEVRON);
+    // rgb_matrix_set_speed_noeeprom(64);
+    // rgb_matrix_mode_noeeprom(RGB_MATRIX_RAINBOW_MOVING_CHEVRON);
+    rgb_matrix_mode(RGB_MATRIX_SOLID_COLOR);
+    rgb_matrix_sethsv_noeeprom(HSV_DIMM_YELLOW);
     #endif    
 }
 
@@ -162,8 +168,4 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         rgb_matrix_set_color(4, RGB_RED);
         #endif
     }
-}
-
-void housekeeping_task_user(void) {
-    rgb_matrix_set_suspend_state(USB_DeviceState == DEVICE_STATE_Suspended);
 }
