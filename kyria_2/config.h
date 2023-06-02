@@ -78,7 +78,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define DRIVER_LED_TOTAL RGBLED_NUM // Number of LEDs
 #    define RGB_MATRIX_SPLIT { 10, 10 }
 #    define RGB_MATRIX_MAXIMUM_BRIGHTNESS 170
-#    define RGB_DISABLE_WHEN_USB_SUSPENDED
+#    define RGB_DISABLE_WHEN_USB_SUSPENDED 1
 
 // See list of all effects
 // https://beta.docs.qmk.fm/using-qmk/hardware-features/lighting/feature_rgb_matrix#rgb-matrix-effects-id-rgb-matrix-effects
